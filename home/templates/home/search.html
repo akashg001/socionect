@@ -1,0 +1,233 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socio-connect</title>
+    <link rel="shortcut icon" href="./images/logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{% static 'css/socio.css' %}">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+    </script>
+    <style>
+        .popup {
+            display: none;
+            position: fixed;
+            padding: 10px;
+            width: 280px;
+            left: 50%;
+            margin-left: -150px;
+            height: 250px;
+            top: 50%;
+            margin-top: -100px;
+            background: #FFF;
+            border: 3px solid #F04A49;
+            z-index: 20;
+          }
+          
+          #popup:after {
+            position: fixed;
+            content: "";
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: -2;
+          }
+          
+          #popup:before {
+            position: absolute;
+            content: "";
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: #FFF;
+            z-index: -1;
+          }
+          
+          /* Styling buttons & webpage */
+          
+          body {
+            background: offwhite;
+            font-family: Arial, sans-serif;
+            text-align: center;
+          }
+          
+          button {
+              margin-top: 50px;
+              background-color: rgba(255,255,255,0.3);
+              border: 3px solid #F04A49;
+              color: #F04A49;
+              font-size: 25px;
+              padding: 10px 20px;
+              
+          }
+          
+          button:hover {
+              background-color: #F04A49;
+              color: #FFF;
+              border: 3px solid #F04A49;
+              transition: all 0.3s ease 0s;
+          }
+          
+          p {
+              margin: 1em 0;
+            font-size: 16px;
+          }
+          
+          
+          .popupk {
+            display: none;
+            position: fixed;
+            padding: 10px;
+            width: 280px;
+            left: 50%;
+            margin-left: -150px;
+            height: 180px;
+            top: 50%;
+            margin-top: -100px;
+            background: #FFF;
+            border: 3px solid #F04A49;
+            z-index: 20;
+          }
+          
+          #popupk:after {
+            position: fixed;
+            content: "";
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: -2;
+          }
+          
+          #popupk:before {
+            position: absolute;
+            content: "";
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: #FFF;
+            z-index: -1;
+          }
+          
+          /* Styling buttons & webpage */
+          
+          body {
+            background: offwhite;
+            font-family: Arial, sans-serif;
+            text-align: center;
+          }
+          
+          button {
+              margin-top: 50px;
+              background-color: rgba(255,255,255,0.3);
+              border: 3px solid #F04A49;
+              color: #F04A49;
+              font-size: 25px;
+              padding: 10px 20px;
+              
+          }
+          
+          button:hover {
+              background-color: #F04A49;
+              color: #FFF;
+              border: 3px solid #F04A49;
+              transition: all 0.3s ease 0s;
+          }
+          
+          p {
+              margin: 1em 0;
+            font-size: 16px;
+          }
+          
+    </style>
+</head>
+<body>
+    
+
+<nav>
+    
+    <div class="container">
+        <div class="logo text-bold">
+                <i> Socio-connect</i></div>
+            <div class="search_bar">
+                <i class="uil uil-search"></i>
+                <form action="" method="GET" >
+                <input type="text" placeholder="search for creators" name="q" value="{{ request.GET.q }}"> 
+            </div>
+                </form>
+            <div class="create">
+                <label id="creators"  class="btn btn-primary" for="create-post" onclick="show('popup')">create</label> 
+                <div class="popup" id="popup">
+                    <p>Post your picture</p>
+                    <form action="{% url 'post_picture' %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+						<input type="file" id="choose-file" name="pic" size="80"  required>
+                        <input type="text" placeholder="Add caption" name="caption"/>
+						<button type="submit" class="btn">Create</button>
+                    </form>
+                  </div>
+                  
+            </div>
+            <div class="profile-photo-nav">
+                <img src="{{me.dp.url}}" alt="profile">
+            </div>
+            <div class="burger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+        </div> 
+    </nav>
+    <form action="" method="POST" enctype="multipart/form-data">
+        <div class="logo">
+          <h3 style="padding-top: 5px; font-size: 20px;">Search Results</h3>
+        </div>
+
+      {% for user in users %}
+          <div class="side-menu__user-profile" style="text-align: start; border: solid rgba(192, 192, 192, 0.514) 1px; padding: 10px; border-radius: 25px;">
+              <a href="{% url 'profile' user.user_id %}" class="side-menu__user-avatar">
+                  {% if user.dp.url %}
+                  <img src="{{ user.dp.url }}" alt="User Picture" style="width:100px;border-radius: 50%;">
+                  {% else %}
+                  <img src="{% static 'assets1/default.jpg' %}" alt="User Picture">
+
+                  {% endif %}
+              </a>
+              <div class="side-menu__user-idnfo">
+                  {% if user.user.first_name %}
+                  <a href="{% url 'profile' user.user_id %}" style="font-size: 15px; color: black; text-align: center;">{{user.user.first_name|title }} {{user.user.last_name|title }}</a>
+                  {% else%}
+                  <a href="#">Socionect User</a>
+
+                  {% endif %}
+                  <br>
+                  <span style="font-size: 14px;">@{{user.user.username}}</span>
+                  <br>
+                  <a href="{% url 'profile' user.user_id %}" style="color: blue;" class="side-menu__user-button">View Profile</a>
+
+              </div>
+          </div>
+          <!-- <hr> -->
+      {% endfor %}
+      
+        
+      </form>
+    <!-- ==============================================main==================================================== -->
+      
+        <script src="{% static 'js/socio.js' %}"></script>  
+        
+    
+</body>
+
+</html>

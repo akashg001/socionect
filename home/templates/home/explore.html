@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+</head>
+<body>
+	
+	<main>
+	
+		<div class="container">
+	
+			<div class="gallery">
+				{% if post %}
+				{% for posts in post %}
+				<div class="gallery-item" tabindex="0">
+	
+					<img src="{{posts.pic.url}}" class="gallery-image" alt="">
+	
+					<div class="gallery-item-info">
+	
+						<ul>
+							<li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> {{posts.likes}}</li>
+							<li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i>{{posts.comments}}</li>
+						</ul>
+	
+					</div>
+	
+				</div>
+				{% endfor %}
+				{% else %}<h2> NO. Posts</h2>
+				{% endif %}
+				
+				<!-- End of gallery -->
+	
+			
+		</div>
+		<!-- End of container -->
+	
+	</main>
+</body>
+</html>
