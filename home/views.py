@@ -1,7 +1,7 @@
 import contextvars
 from django.http import JsonResponse
 from django.shortcuts import render,redirect,HttpResponse,get_object_or_404
-from .models import userprofile,posts,Message
+from .models import userprofile,posts,Message,comments
 from django.contrib.auth import authenticate ,logout
 from django.contrib.auth import login as dj_login
 from django.contrib.auth.models import User
@@ -11,6 +11,7 @@ from django.utils.timezone import now
 from datetime import timedelta
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from notifications.signals import notify
 
 # Create your views here.
 
@@ -141,6 +142,27 @@ def post_picture(request):
             #return redirect(home)
     return redirect('/')
 
+def notifications(request):
+    x = posts.objects.all()
+    return render(request,'home/notifications.html',{'post':x})
+
+def commenting(request,pk):
+    if request.method == "POST":
+        x = posts.objects.get(pk=pk)
+        user_id = request.session["user_id"]
+        user1 = userprofile.objects.get(user=user_id)
+        print(x,"x found")
+        y = comments()
+        y.post_ids = x
+        y.comment_by = user1
+        y.comments = request.POST["comments"]
+        x.comment_count+=1
+        x.save()
+        y.save()
+        print(y,"y saved")
+        notify.send(sender=request.user, recipient=x.post_by.user, verb='comment',
+                description=str(request.user)+" has commented your post")
+    return redirect('/dashboard/')
 
 def likepost(request,id):
     x = posts.objects.get(post_id=id)
@@ -153,12 +175,15 @@ def likepost(request,id):
         x.likes+=1
         
     x.save()
+    notify.send(sender=request.user, recipient=x.post_by.user, verb='Like',
+            description=str(request.user)+"has liked your post")
     return redirect('/dashboard/')
 
-def comment(request):
-    x = posts.objects.get(post_id = request.POST["post_id"])
-    x.comments = request.POST["comment"]
-    x.save()
+def show(request,id):
+    x = posts.objects.get(post_id = id)
+    y = comments.objects.filter(post_ids=x)
+    context={'x':x,'y':y}
+    return render(request,'home/show.html',context)
 
 def explore(request):
     x = posts.objects.all()
@@ -275,6 +300,7 @@ def SendDirect(request):
         ac = User.objects.get(username=to_user_username)
         to_user = userprofile.objects.get(user=ac)
         Message.sender_message(from_user, to_user, body)
+        
     return redirect('/direct/'+str(to_user_username))
     
 

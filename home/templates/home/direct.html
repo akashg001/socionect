@@ -75,11 +75,15 @@
 								<div class="badge bg-success float-right"></div>
 								<div class="d-flex align-items-start pb-2">
 								<img src="{{ i.dp.url }}" class="rounded-circle mr-1" alt="img" width="40" height="40">
-							
+								
 							<div class="flex-grow-1 ml-6">
 								<b>{{i.user.first_name}} {{i.user.last_name}}</b>
 								<div class="small"><span class="fas fa-circle chat-online"></span> @{{i.user}}</div>
 							</div>
+							{% if messages.is_read == false %}
+								<small class="notification-count">{{ messages.count }}12</small>
+							{% endif %}
+								
 						</div>
 					</a>
 					{% endfor %}
@@ -113,6 +117,7 @@
 												<div>
 													<a href=""><img src="{{ direct.sender.dp.url }}" class="rounded-circle mr-1" alt="img" width="40" height="40"></a>
 													<div class="text-muted small text-nowrap mt-2" style="font-size:10px; color: rgba(180, 180, 180, 0);"><p style="font-size:10px; color: black;">{{direct.date|date:"d M, Y"}}</p></div>
+													
 
 												</div>
 												<div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">

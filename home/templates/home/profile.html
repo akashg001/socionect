@@ -5,6 +5,11 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	{% comment %} <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" /> {% endcomment %}
+	<link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    
 	<title>Document</title>
 	<link rel="stylesheet" href="{% static 'css/profile.css' %}">
 </head>
@@ -42,15 +47,18 @@
 				
 				<ul>
 					<a href="{% url 'follow' data.user_id %}">
+						<div class="button">
 					{% if request.user in data.followers.all %}
-					<li><button class="btn">Unfollow</button></li>
+					<li> <button class="button-15" role="button">Unfollow</button></li>
 					{% else %}
-					<li><button class="btn">Follow</button></li>
+					<li><button class="button-14" role="button">Follow</button></li>
 					{% endif %}
+						
 					</a>
 					<a href="{% url 'directs' data.user %}">
-					<li><button class="btn">Message</button></li>
+					<li><button class="button-13" role="button">Message</button></li>
 					</a>
+				</div>
 				</ul>
 			</div>
 

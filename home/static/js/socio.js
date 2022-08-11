@@ -1,7 +1,8 @@
+
 const allStories = [
     {
-      thumbUrl: "1-thumb.png",
-      imageUrl: "1.png",
+      thumbUrl: "../images/1-thumb.png",
+      imageUrl: "../images/1.png",
       title: "Anuskha Sharma",
     },
   

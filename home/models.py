@@ -25,10 +25,15 @@ class posts(models.Model):
     post_date = models.DateTimeField(auto_now_add=True)
     pic = models.ImageField( upload_to="media/")
     caption = models.TextField(null=True)
-    comments = models.TextField(default="",null=True)
     liked_by = models.ManyToManyField(User,related_name="liked_by",null=True)
     likes = models.IntegerField(default = 0,null=True)
+    comment_count = models.IntegerField(default = 0,null=True)
     
+class comments(models.Model):
+    comment_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    post_ids = models.ForeignKey(posts, on_delete=models.CASCADE,null=True)
+    comments = models.TextField(default="",null=True)
+    comment_by = models.ForeignKey(userprofile, on_delete=models.CASCADE, related_name="comment_by")
 
 class Message(models.Model):
     msguser = models.ForeignKey(userprofile, on_delete=models.CASCADE, related_name="msguser")

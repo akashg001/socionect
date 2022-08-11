@@ -15,9 +15,11 @@
         {% csrf_token %}
         <img src="{% static 'images/Add a subheading (2).png' %}" alt="logo">
     <h1> login </h1>
-    <input type="text" placeholder=" enter email" id="username" name = "loginuname">
+    <input type="tel" placeholder=" enter email" id="username" name = "loginuname">
     <input type="password" placeholder="enter password" id="password" name="loginpassword1">
     <input type="submit" value="login">
+    <p><b>No Account? </b><a href="{% url 'register' %}">Register Now</a></p>
     </form>
+    
 </body>
 </html>
